@@ -3,7 +3,9 @@
         <div class="col-3" style="height: 550px">
             <q-card class="bg-blue-grey-10" square style="height: 100%">
                 <div class="q-gutter-xs row justify-center grid-container" v-if="toggleGrid === true">
-                    <div class="box" v-for="square in squares" :key="square" :class="square.class" v-on:click="renderClick(square.value)" />
+                    <div class="box" v-for="square in squares" :key="square" :class="square.class" v-on:click="renderClick(square.value)">
+                        {{ square.value }} 
+                    </div>
                 </div>
                 <p class="text-center text-white" v-if="toggleGrid === true">Match</p>
                 <p class="text-center text-white" v-else>Incorrect</p>
@@ -20,6 +22,7 @@ export default {
             toggleGrid: true,
             incorrect: 0,
             maxIncorrect: 2,
+            patternSize: 8,
             pattern: [],
             numberOfSquares: 25,
             defaultSquares: [
@@ -52,18 +55,24 @@ export default {
         }
     },
     methods: {
-        setPattern(i, previousNumber, previousClass) {
+        setPattern() {
+            for ( let i = 0; i < this.patternSize; i++ ) {
+                let randomNumber = Math.floor( Math.random() * ( this.numberOfSquares - 1 ) )
+                this.pattern.push(randomNumber)
+            }
+            console.log(this.pattern)
+            this.displayPattern(0, null);
+        },
+        displayPattern(i, previousNumber, previousClass) {
             setTimeout(() => {
-                if ( previousNumber != null && previousClass != null ) {
-                        this.defaultSquares[previousNumber].class = previousClass
-                    }
-                if ( i != 1 ) {
-                    let randomNumber = Math.floor(Math.random() * 23)
-                    this.pattern.push(randomNumber)
-                    previousNumber = randomNumber
-                    previousClass = this.defaultSquares[previousNumber].class
-                    this.defaultSquares[randomNumber].class = "bg-blue-4"
-                    if ( --i ) this.setPattern(i, previousNumber, previousClass)
+                let index = this.pattern[i]
+                if ( previousClass != null ) { 
+                    this.defaultSquares[previousNumber].class = previousClass
+                }
+                if ( i != this.pattern.length ) {
+                    previousClass = this.defaultSquares[index].class
+                    this.defaultSquares[index].class = "bg-blue-4"
+                    if ( ++i && i < this.pattern.length + 1) this.displayPattern(i, index, previousClass)
                 }
             }, 400);
         },
@@ -89,7 +98,7 @@ export default {
         }
     },
     created() {
-        this.setPattern(9)
+        this.setPattern()
     }
 }
 </script>
