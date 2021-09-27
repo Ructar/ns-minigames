@@ -20,9 +20,7 @@
                         leave-active-class="animated fadeOut"
                         >
                         <div class="q-gutter-xs row justify-center grid-container" v-show="showGrid">
-                            <div class="box" v-for="square in squares" :key="square" :class="square.class" v-on:click="renderClick(square.value)">
-                                {{ square.value }} 
-                            </div>
+                            <div class="box" v-for="square in squares" :key="square" :class="square.class" v-on:click="renderClick(square.value)" />
                         </div>
                         <p class="text-center text-white" v-show="showGrid">Match</p>
                     </transition-group>
@@ -53,37 +51,10 @@ export default {
             patternSize: 8,
             pattern: [],
             numberOfSquares: 25,
-            defaultSquares: [
-                { value: 0, class: "bg-grey-6" },
-                { value: 1, class: "bg-grey-7" },
-                { value: 2, class: "bg-grey-6" },
-                { value: 3, class: "bg-grey-7" },
-                { value: 4, class: "bg-grey-6" },
-                { value: 5, class: "bg-grey-7" },
-                { value: 6, class: "bg-grey-6" },
-                { value: 7, class: "bg-grey-7" },
-                { value: 8, class: "bg-grey-6" },
-                { value: 9, class: "bg-grey-7" },
-                { value: 10, class: "bg-grey-6" },
-                { value: 11, class: "bg-grey-7" },
-                { value: 12, class: "bg-grey-6" },
-                { value: 13, class: "bg-grey-7" },
-                { value: 14, class: "bg-grey-6" },
-                { value: 15, class: "bg-grey-7" },
-                { value: 16, class: "bg-grey-6" },
-                { value: 17, class: "bg-grey-7" },
-                { value: 18, class: "bg-grey-6" },
-                { value: 19, class: "bg-grey-7" },
-                { value: 20, class: "bg-grey-6" },
-                { value: 21, class: "bg-grey-7" },
-                { value: 22, class: "bg-grey-6" },
-                { value: 23, class: "bg-grey-7" },
-                { value: 24, class: "bg-grey-6" },
-            ],
+            defaultSquares: [],
             showGridLoading () {
                 loading.value = true
                 showGrid.value = false
-
                 setTimeout(() => {
                     loading.value = false
                     showGrid.value = true
@@ -93,6 +64,15 @@ export default {
         }
     },
     methods: {
+        generateBoxes() {
+            for ( let i = 0; i < this.numberOfSquares; i++ ) {
+                if ( i % 2 === 0 ) {
+                    this.defaultSquares[i] = { value: i, class: "bg-grey-6"}
+                } else {
+                    this.defaultSquares[i] = { value: i, class: "bg-grey-7"}
+                }
+            }
+        },
         setPattern() {
             for ( let i = 0; i < this.patternSize; i++ ) {
                 let randomNumber = Math.floor( Math.random() * ( this.numberOfSquares - 1 ) )
@@ -146,6 +126,7 @@ export default {
         }
     },
     created() {
+        this.generateBoxes()
         this.showGridLoading()
     }
 }
