@@ -2,23 +2,44 @@
     <div class="row items-center justify-center" style="background-color: white; width: 100%">
         <div class="col-3" style="height: 550px">
             <q-card class="bg-blue-grey-10" square style="height: 100%">
-                <div class="q-gutter-xs row justify-center grid-container" v-if="toggleGrid === true">
-                    <div class="box" v-for="square in squares" :key="square" :class="square.class" v-on:click="renderClick(square.value)">
-                        {{ square.value }} 
+                <q-card-section v-show="!showGrid">
+                    <div class="text-center">
+                        <h4>Human Captcha Required</h4>
+                        <h5>Match the following pattern in order</h5>
                     </div>
-                </div>
-                <p class="text-center text-white" v-if="toggleGrid === true">Match</p>
-                <p class="text-center text-white" v-else>Incorrect</p>
+                </q-card-section>
+                <q-card-section>
+                    <transition-group
+                        appear
+                        enter-active-class="animated fadeIn"
+                        leave-active-class="animated fadeOut"
+                        >
+                        <div class="q-gutter-xs row justify-center grid-container" v-show="showGrid">
+                            <div class="box" v-for="square in squares" :key="square" :class="square.class" v-on:click="renderClick(square.value)">
+                                {{ square.value }} 
+                            </div>
+                        </div>
+                        <p class="text-center text-white" v-show="showGrid">Match</p>
+                    </transition-group>
+                </q-card-section>
+                <q-inner-loading :showing="loading">
+                    <p>Starting Hackersman Stuff</p>
+                    <q-spinner-gears size="50px" color="primary" />
+                </q-inner-loading>
             </q-card>
         </div>
     </div>
 </template>
 
 <script>
+import { ref } from "vue"
 export default {
     name: "blinking",
     data () {
-        return{ 
+        const loading = ref(false)
+        const showGrid = ref(false)
+        return {
+            loading, showGrid,
             toggleGrid: true,
             canClick: false,
             incorrect: 0,
@@ -52,7 +73,17 @@ export default {
                 { value: 22, class: "bg-grey-6" },
                 { value: 23, class: "bg-grey-7" },
                 { value: 24, class: "bg-grey-6" },
-            ]
+            ],
+            showGridLoading () {
+                loading.value = true
+                showGrid.value = false
+
+                setTimeout(() => {
+                    loading.value = false
+                    showGrid.value = true
+                    this.setPattern()
+                }, 10000)
+            }
         }
     },
     methods: {
@@ -61,8 +92,7 @@ export default {
                 let randomNumber = Math.floor( Math.random() * ( this.numberOfSquares - 1 ) )
                 this.pattern.push(randomNumber)
             }
-            console.log(this.pattern)
-            this.displayPattern(0, null);
+            this.displayPattern(0, null)
         },
         displayPattern(i, previousNumber, previousClass) {
             setTimeout(() => {
@@ -109,7 +139,7 @@ export default {
         }
     },
     created() {
-        this.setPattern()
+        this.showGridLoading()
     }
 }
 </script>
@@ -121,6 +151,7 @@ export default {
     }
 
     .box {
+        transition: 5ms;
         height: 75px;
         width: 75px;
     }
