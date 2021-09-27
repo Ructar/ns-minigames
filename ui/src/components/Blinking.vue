@@ -6,6 +6,7 @@
                     <div class="text-center">
                         <h4>Human Captcha Required</h4>
                         <h5>Match the following pattern in order</h5>
+                        <q-icon name="fingerprint" size="200px"/>
                     </div>
                 </q-card-section>
                 <q-card-section>
