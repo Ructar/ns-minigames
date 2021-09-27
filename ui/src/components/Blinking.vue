@@ -3,10 +3,14 @@
         <div class="col-3" style="height: 550px">
             <q-card class="bg-blue-grey-10" square style="height: 100%">
                 <q-card-section v-show="!showGrid">
-                    <div class="text-center">
+                    <div class="text-center" v-if="!failed">
                         <h4>Human Captcha Required</h4>
                         <h5>Match the following pattern in order</h5>
                         <q-icon name="fingerprint" size="200px"/>
+                    </div>
+                    <div class="text-center" v-else>
+                        <h4 class="text-red-8">Invalid Captcha Entered</h4>
+                        <q-icon name="fingerprint" size="200px" color="red"/>
                     </div>
                 </q-card-section>
                 <q-card-section>
@@ -40,6 +44,7 @@ export default {
         const loading = ref(false)
         const showGrid = ref(false)
         return {
+            failed: false,
             loading, showGrid,
             toggleGrid: true,
             canClick: false,
@@ -127,7 +132,8 @@ export default {
                     this.incorrect = this.incorrect + 1
                     this.defaultSquares[value].class = "bg-red-4"
                     if ( this.incorrect >= this.maxIncorrect) {
-                        this.toggleGrid = false
+                        this.showGrid = false
+                        this.failed = true
                         this.canClick = false
                     }
                 }
