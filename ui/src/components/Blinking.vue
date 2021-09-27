@@ -20,6 +20,7 @@ export default {
     data () {
         return{ 
             toggleGrid: true,
+            canClick: false,
             incorrect: 0,
             maxIncorrect: 2,
             patternSize: 8,
@@ -73,21 +74,31 @@ export default {
                     previousClass = this.defaultSquares[index].class
                     this.defaultSquares[index].class = "bg-blue-4"
                     if ( ++i && i < this.pattern.length + 1) this.displayPattern(i, index, previousClass)
+                } else {
+                    this.canClick = true
                 }
-            }, 400);
+            }, 800);
         },
         renderClick(value) {
-            if ( value === this.pattern[0]) {
-                this.pattern.shift();
-                this.defaultSquares[value].class = "bg-green-4"
-                if( this.pattern.length <= 0 ) {
-                    console.log("You won!")
-                }
-            } else {
-                this.incorrect = this.incorrect + 1
-                this.defaultSquares[value].class = "bg-red-4"
-                if ( this.incorrect >= this.maxIncorrect) {
-                    this.toggleGrid = false
+            if ( this.canClick ) {
+                if ( value === this.pattern[0]) {
+                    this.pattern.shift();
+                    let previous = this.defaultSquares[value].class
+                    this.defaultSquares[value].class = "bg-green-4"
+                    setTimeout(() => {
+                        this.defaultSquares[value].class = previous
+                    }, 1000)
+                    if( this.pattern.length <= 0 ) {
+                        console.log("You won!")
+                        this.canClick = false
+                    }
+                } else {
+                    this.incorrect = this.incorrect + 1
+                    this.defaultSquares[value].class = "bg-red-4"
+                    if ( this.incorrect >= this.maxIncorrect) {
+                        this.toggleGrid = false
+                        this.canClick = false
+                    }
                 }
             }
         }
