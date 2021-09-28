@@ -1,6 +1,6 @@
 <template>
     <div class="row items-center justify-center" style="background-color: white; width: 100%">
-        <div class="col-3" style="height: 550px">
+        <div class="col-3" style="min-height: 550px; height: auto">
             <q-card class="bg-blue-grey-10" square style="height: 100%">
                 <q-card-section v-show="!showGrid">
                     <div class="text-center" v-if="!failed">
@@ -48,7 +48,7 @@ export default {
             canClick: false,
             incorrect: 0,
             maxIncorrect: 2,
-            patternSize: 8,
+            patternSize: 6,
             pattern: [],
             numberOfSquares: 25,
             defaultSquares: [],
