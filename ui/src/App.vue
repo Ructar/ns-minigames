@@ -7,18 +7,18 @@
 <script>
 import { ref } from 'vue'
 import Blinking from './components/Blinking.vue'
-
+import Password from './components/Password.vue'
 export default {
   name: 'LayoutDefault',
 
   components: {
-    Blinking
+    Blinking, Password
   },
 
   setup () {
     return {
       show: ref(false),
-      minigame: ref(Blinking)
+      minigame: ref(Password)
     }
   }
 }
