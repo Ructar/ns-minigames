@@ -1,6 +1,6 @@
 <template>
     <div class="row items-center justify-center" style="background-color: white; width: 100%">
-        <div class="col-3" style="min-height: 550px; height: auto">
+        <div class="col-3" style="height: 550px">
             <q-card class="bg-blue-grey-10" square style="height: 100%">
                 <q-card-section v-show="!showGrid">
                     <div class="text-center" v-if="!failed">
@@ -48,13 +48,40 @@ export default {
             canClick: false,
             incorrect: 0,
             maxIncorrect: 2,
-            patternSize: 6,
+            patternSize: 8,
             pattern: [],
             numberOfSquares: 25,
-            defaultSquares: [],
+            defaultSquares: [
+                { value: 0, class: "bg-grey-6" },
+                { value: 1, class: "bg-grey-7" },
+                { value: 2, class: "bg-grey-6" },
+                { value: 3, class: "bg-grey-7" },
+                { value: 4, class: "bg-grey-6" },
+                { value: 5, class: "bg-grey-7" },
+                { value: 6, class: "bg-grey-6" },
+                { value: 7, class: "bg-grey-7" },
+                { value: 8, class: "bg-grey-6" },
+                { value: 9, class: "bg-grey-7" },
+                { value: 10, class: "bg-grey-6" },
+                { value: 11, class: "bg-grey-7" },
+                { value: 12, class: "bg-grey-6" },
+                { value: 13, class: "bg-grey-7" },
+                { value: 14, class: "bg-grey-6" },
+                { value: 15, class: "bg-grey-7" },
+                { value: 16, class: "bg-grey-6" },
+                { value: 17, class: "bg-grey-7" },
+                { value: 18, class: "bg-grey-6" },
+                { value: 19, class: "bg-grey-7" },
+                { value: 20, class: "bg-grey-6" },
+                { value: 21, class: "bg-grey-7" },
+                { value: 22, class: "bg-grey-6" },
+                { value: 23, class: "bg-grey-7" },
+                { value: 24, class: "bg-grey-6" },
+            ],
             showGridLoading () {
                 loading.value = true
                 showGrid.value = false
+
                 setTimeout(() => {
                     loading.value = false
                     showGrid.value = true
@@ -64,15 +91,6 @@ export default {
         }
     },
     methods: {
-        generateBoxes() {
-            for ( let i = 0; i < this.numberOfSquares; i++ ) {
-                if ( i % 2 === 0 ) {
-                    this.defaultSquares[i] = { value: i, class: "bg-grey-6"}
-                } else {
-                    this.defaultSquares[i] = { value: i, class: "bg-grey-7"}
-                }
-            }
-        },
         setPattern() {
             for ( let i = 0; i < this.patternSize; i++ ) {
                 let randomNumber = Math.floor( Math.random() * ( this.numberOfSquares - 1 ) )
@@ -126,7 +144,6 @@ export default {
         }
     },
     created() {
-        this.generateBoxes()
         this.showGridLoading()
     }
 }

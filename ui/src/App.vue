@@ -8,17 +8,18 @@
 import { ref } from 'vue'
 import Blinking from './components/Blinking.vue'
 import Password from './components/Password.vue'
+import Triangle from './components/Triangle.vue'
 export default {
   name: 'LayoutDefault',
 
   components: {
-    Blinking, Password
+    Blinking, Password, Triangle
   },
 
   setup () {
     return {
       show: ref(false),
-      minigame: ref(Password)
+      minigame: ref(Triangle)
     }
   }
 }
