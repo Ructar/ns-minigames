@@ -6,10 +6,10 @@
                     <transition-group appear enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
                         <div class="row justify-evenly" style="width: 100%">
                             <div class="col-2 triangle" v-show="showTriangle" v-for="triangle in triangles" :key="triangle">
-                                <p class="triangle-left">{{triangle.left}}</p>
-                                <p class="triangle-top">{{triangle.top}}</p>
-                                <p class="triangle-right">{{triangle.right}}</p>
-                                <p class="triangle-center" v-if="triangle.center !== 0">{{triangle.center}}</p>
+                                <p class="triangle-left" style="color: white">{{triangle.left}}</p>
+                                <p class="triangle-top" style="color: white">{{triangle.top}}</p>
+                                <p class="triangle-right" style="color: white">{{triangle.right}}</p>
+                                <p class="triangle-center" style="color: white" v-if="triangle.center !== 0">{{triangle.center}}</p>
                             </div>
                         </div>
                         <q-form style="margin-top: 10px;" @submit="submitAnswer">
