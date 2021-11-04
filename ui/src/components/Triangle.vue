@@ -12,9 +12,13 @@
                                 <p class="triangle-center" v-if="triangle.center !== 0">{{triangle.center}}</p>
                             </div>
                         </div>
-                        <q-form @submit="submitAnswer">
+                        <q-form style="margin-top: 10px;" @submit="submitAnswer">
                             <q-input dense name="answer" v-model="answer"></q-input>
                         </q-form>
+                        <div class="text-center" style = "padding-top: 4px">
+                            <p v-if="correct === true" style="color: green">Success</p>
+                            <p v-if="correct === false" style="color: red">Failure</p>
+                        </div>
                     </transition-group>
                 </q-card-section>
                 <q-inner-loading :showing="loading">
@@ -52,11 +56,25 @@
                         loading.value = false
                         showTriangle.value = true
                     }, 100)
-                }
+                },
+                correctAnswer: null,
+                answer: null,
+                correct: null,
             }
        },
        methods: {
-
+           submitAnswer() {
+               if ( this.answer === this.correctAnswer ) { 
+                   this.correct = true
+                   console.log("True")
+               } else {
+                   this.correct = false
+                   console.log("False: " + this.correctAnswer)
+               }
+           },
+           randomInt(min, max) {
+               return Math.floor(Math.random() * (max - min + 1) + min)
+           }
        },
        computed: {
            triangles() {
@@ -65,22 +83,21 @@
        },
        created() {
            this.defaultTriangles.forEach(triangle => {
-                triangle.top = Math.floor( Math.random() * ( this.maxInterval ) )
-                triangle.left = Math.floor( Math.random() * ( triangle.top - 1) )
-                triangle.right = Math.floor( Math.random() * ( this.maxInterval ) )
+                triangle.top = this.randomInt(6, 10)
+                triangle.left = this.randomInt(1, 5)
+                triangle.right = this.randomInt(2, 4)
                 triangle.center = ( triangle.top - triangle.left ) * triangle.right
-                if ( triangle.top < 1 ) {
-                    triangle.top = 2
-                }
-                if ( triangle.left < 1) {
-                    triangle.left = 2
-                }
-                if ( triangle.right < 1 ) {
-                    triangle.right = 2
-                }
            });
-           this.defaultTriangles[3].center = 0
+           this.correctAnswer = this.defaultTriangles[3].center.toString()
+           this.defaultTriangles[3].center = "?"
            this.showTriangleLoading();
+           setTimeout(() => {
+               if ( this.correct ) {
+                   this.correct = true
+               } else {
+                   this.correct = false
+               }
+           }, 5000)
        }
     }
 </script>
